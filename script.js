@@ -10,6 +10,24 @@ var height = canvas.height;
 var window_width = 12;
 var window_height = 16;
 
+var shapes = [
+  [[1,1,0],
+   [0,1,1],
+   [0,0,0]],
+  [[0,1,1],
+   [1,1,0],
+   [0,0,0]],
+  [[1,1,0],
+   [1,1,0],
+   [0,0,0]]
+];
+var long = [
+  [1,0,0,0],
+  [1,0,0,0],
+  [1,0,0,0],
+  [1,0,0,0]
+]
+
 var mino;
 
 var image = new Image();
@@ -35,24 +53,23 @@ var array = [
 ];
 
 window.onload = main;
-
 //赤色のMinoブロック
-class Mino1{
-  constructor(_x,_y){
+class Mino{
+  constructor(_x,_y,num){
     this.x = _x;
     this.y = _y;
-    this.width = 3;
-    this.height = 3;
+    this.type = num;
+    this.shape;
+    this.width;
+    this.height;
     this.vital = true;
-    this.shape = [
-      [1,1,0],
-      [0,1,1],
-      [0,0,0]
-    ];
 
+    this.init();
     this.tmpshape = this.copyMino();
 
     this.setThisMinoToArray();
+    printArray();
+
     document.body.addEventListener('keydown',
     event => {
         if (event.key === 'd' && this.vital) {
@@ -60,7 +77,6 @@ class Mino1{
             this.removeThisMinoFromArray();
             this.x += 1;
             this.setThisMinoToArray();
-            console.log(this.x);
             drawField();
           }
         }
@@ -70,7 +86,6 @@ class Mino1{
             this.removeThisMinoFromArray();
             this.x -= 1;
             this.setThisMinoToArray();
-            console.log(this.x);
             drawField();
           }
         }
@@ -104,6 +119,27 @@ class Mino1{
     }, 1000)
   }
 
+  init(){
+    if(0 <= this.type && this.type <= 2){
+      this.width = 3;
+      this.height = 3;
+      this.shape = new Array(this.width);
+      for(let i = 0;i < this.width;i++){
+        this.shape[i] = new Array(this.width).fill(0);
+        console.log(this.type);
+        this.shape[i] = shapes[this.type][i].concat();
+      }
+    }else{
+      this.width = 4;
+      this.height = 4;
+      this.shape = new Array(this.width);
+      for(let i = 0;i < this.width;i++){
+        this.shape[i] = new Array(this.width).fill(0);
+        this.shape[i] = long[i].concat();
+      }
+    }
+  }
+
   copyMino(){
     let arr = new Array(this.height);
     for(let i = 0; i < this.height;i++){
@@ -124,7 +160,7 @@ class Mino1{
   rotateR(){
     for(let i = 0; i < this.height;i++){
       for(let j = 0; j < this.width;j++){
-        this.shape[i][j] = this.tmpshape[2-j][i];
+        this.shape[i][j] = this.tmpshape[this.width - 1 -j][i];
       }
     }
     this.tmpshape = this.copyMino();
@@ -206,11 +242,13 @@ class Mino1{
       }
     }
   }
+
   setThisMinoToArray(){
     for(let i = 0; i < this.height;i++){
       for(let j = 0; j < this.width;j++){
-        if(this.shape[i][j] == 1){
-          setArray(this.x+j,this.y+i,2);
+        console.log(this.shape[i][j] + "OK");
+        if(this.shape[i][j] === 1){
+          setArray(this.x+j,this.y+i,2+this.type);
         }
       }
     }
@@ -268,11 +306,11 @@ function detectFullLine(){
 }
 
 function main(){
-  mino = new Mino1(3,3);
+  mino = new Mino(5,0,4);
   drawField();
   setInterval(function(){
     if(!mino.vital){
-      mino = new Mino1(3,3);
+      mino = new Mino(5,0,Math.ceil(Math.random() * 10) % 5);
 
     }
     detectFullLine();
