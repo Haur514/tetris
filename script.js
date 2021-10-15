@@ -1,16 +1,16 @@
-var canvas = document.getElementById('myCanvas');
-var ctx = canvas.getContext("2d");
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext("2d");
 
-var canvas2 = document.getElementById("canvas2");
-var ctx2 = canvas2.getContext("2d");
+const canvas2 = document.getElementById("canvas2");
+const ctx2 = canvas2.getContext("2d");
 
-var width = canvas.width;
-var height = canvas.height;
+const width = canvas.width;
+const height = canvas.height;
 
-var window_width = 12;
-var window_height = 16;
+const window_width = 12;
+const window_height = 16;
 
-var shapes = [
+const shapes = [
   [[1,1,0],
    [0,1,1],
    [0,0,0]],
@@ -21,19 +21,19 @@ var shapes = [
    [1,1,0],
    [0,0,0]]
 ];
-var long = [
+const long = [
   [1,0,0,0],
   [1,0,0,0],
   [1,0,0,0],
   [1,0,0,0]
 ]
 
-var mino;
+let mino;
 
-var image = new Image();
-    image.src = 'chip.png';
+const image = new Image();
+image.src = 'chip.png';
 
-var array = [
+const array = [
   [1,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,1],
